@@ -16,7 +16,7 @@
 
 1. 克隆仓库
 ```bash
-git clone https://github.com/yourusername/Rss_monitor.git
+git clone https://github.com/adminlove520/Rss_monitor.git
 cd Rss_monitor
 ```
 
@@ -183,8 +183,8 @@ MIT License
 
 ## 更新日志
 
-- 2023.10.10：初始版本
-- 2024.01.01：
+- 2025.12.09：初始版本
+- 2025.12.09：
   - 增加夜间休眠功能
   - 支持通过Issue添加RSS源
   - 完善配置文件支持
