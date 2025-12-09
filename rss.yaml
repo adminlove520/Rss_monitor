@@ -55,3 +55,24 @@
 "漏洞推送":
   "rss_url": "https://wechat2rss.xlab.app/feed/e5a0a3d839536204e4bcec6ede59fe0cc11f6fc6.xml"
   "website_name": "漏洞推送"
+# ctifeeds
+"ctifeeds-数据泄露":
+  "rss_url": "https://ctifeeds.andreafortuna.org/dataleaks.xml"
+  "website_name": "ctifeeds-数据泄露"
+"ctifeeds-Cybercrime on Telegram":
+  "rss_url": "https://ctifeeds.andreafortuna.org/cybercrime_on_telegram.xml"
+  "website_name": "ctifeeds-网络犯罪"
+"ctifeeds-Datamarkets":
+  "rss_url": "https://ctifeeds.andreafortuna.org/datamarkets.xml"
+  "website_name": "ctifeeds-数据市场"
+"ctifeeds-篡改事件":
+  "rss_url": "https://ctifeeds.andreafortuna.org/recent_defacements.xml"
+  "website_name": "ctifeeds-数据市场"
+# 数据泄露
+"数据泄露-darkforums":
+  "rss_url": "https://xforums.st/forums/-/index.rss"
+  "website_name": "数据泄露-xforums.st"
+
+"数据泄露-crackingx":
+  "rss_url": "https://crackingx.com/forums/-/index.rss"
+  "website_name": "数据泄露-crackingx"
