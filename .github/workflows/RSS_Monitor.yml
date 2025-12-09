@@ -1,0 +1,68 @@
+name: RSS-Monitor
+
+# 国际标准时间2点（北京时间10点）
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./requirements.txt
+
+      - name: Run RSS Monitor
+        env:
+          DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
+          DINGDING_SECRET: ${{ secrets.DINGDING_SECRET }}
+          DINGDING_SWITCH: "ON"
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_GROUP_ID: ${{ secrets.TELEGRAM_GROUP_ID }}
+          TELEGRAM_SWITCH: "OFF"
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+          PUSHPLUS_SWITCH: "OFF"
+          SERVER_SCKEY: ${{ secrets.SERVER_SCKEY }}
+          SERVER_CHAN_SWITCH: "OFF"
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+          FEISHU_SWITCH: "OFF"
+          NIGHT_SLEEP_SWITCH: ${{ secrets.NIGHT_SLEEP_SWITCH || 'ON' }}
+        run: python ./Rss_monitor.py --once
+
+      - name: Commit changes
+        run: |
+          git diff
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add articles.db
+          git commit -m "每日安全社区文章更新（`date +'%Y-%m-%d'`）" || echo "没有新文章需要提交"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+
+  del_runs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 7
+          keep_minimum_runs: 7

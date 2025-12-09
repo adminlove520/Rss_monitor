@@ -1,0 +1,6 @@
+requests
+dingtalkchatbot
+pyyaml
+lxml
+feedparser
+python-telegram-bot
