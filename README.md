@@ -106,9 +106,159 @@ python Rss_monitor.py
 
 项目包含两个GitHub Action工作流：
 
-1. **RSS_Monitor.yml**：定期运行RSS监控，默认每天国际标准时间2点（北京时间10点）执行
+1. **RSS_Monitor.yml**：定期运行RSS监控
+   - 执行时间：北京时间9:00-23:00，每小时执行一次
+   - 运行时长：每个工作流运行59分钟
+   - 夜间休眠：完全跳过北京时间0-7点的触发
+   - 运行模式：默认使用循环模式，每2小时检查一次
 
 2. **add-rss-from-issue.yml**：通过提交Issue添加新的RSS源
+   - 支持两种格式提交
+   - 自动更新rss.yaml
+   - 自动回复并关闭Issue
+
+### 3. 夜间休眠功能
+
+- **默认开启**：在北京时间0-7点之间自动休眠
+- **双重保障**：
+  1. GitHub Action工作流在0-7点不触发
+  2. 脚本内置夜间休眠功能
+- **灵活控制**：支持通过配置文件和环境变量控制
+
+### 4. 数据存储
+
+监控的数据会存储在 `articles.db` SQLite数据库中，包含以下字段：
+- id：自增主键
+- title：文章标题
+- link：文章链接
+- timestamp：添加时间
+
+### 5. 推送格式
+
+推送内容格式示例：
+```
+奇安信威胁情报中心今日更新
+标题: 【附IOC】Next.js RCE漏洞在野利用事件分析
+链接: `https://mp.weixin.qq.com/s?__biz=MzI2MDc2MDA4OA==&mid=2247517208&idx=1&sn=92ee1ae869f212bb8cec41dc715ac438`
+推送时间：2025-12-09 14:22:32
+```
+
+### 6. 通过Issue添加RSS源
+
+您可以通过提交Issue来添加新的RSS源，支持两种格式：
+
+#### 格式1
+```
+网站名称: 示例网站
+RSS URL: https://example.com/feed.xml
+```
+
+#### 格式2
+直接在标题或正文中包含网站名称和URL，例如：
+
+标题：添加示例网站
+正文：https://example.com/feed.xml
+
+### 7. 配置优先级
+
+配置项的优先级从高到低：
+1. 命令行参数
+2. 环境变量
+3. 配置文件 (`config.yaml`)
+4. 默认值
+
+### 8. 异常处理
+
+- 出现异常时，等待1分钟后继续执行
+- 确保数据库连接正确关闭
+- 详细的错误日志输出
+
+### 9. 性能优化
+
+- 每2小时检查一次所有RSS源
+- 夜间自动休眠，节省资源
+- 数据库缓存，避免重复推送
+- 高效的异常处理机制
+
+### 10. 资源消耗
+
+- 内存占用：约50-100MB
+- CPU使用率：低，主要在检查RSS源时占用
+- 网络请求：每次检查RSS源时发送请求
+- 存储占用：随着时间增长，articles.db会逐渐增大
+
+## 开发说明
+
+### 1. 目录结构
+
+```
+Rss_monitor/
+├── Rss_monitor.py         # 主脚本
+├── add_rss_from_issue.py  # Issue处理脚本
+├── config.yaml            # 配置文件
+├── rss.yaml               # RSS源配置
+├── articles.db            # 数据存储
+├── requirements.txt       # 依赖列表
+├── .gitignore            # Git忽略文件
+├── README.md             # 项目说明
+└── .github/
+    └── workflows/
+        ├── RSS_Monitor.yml           # 主工作流
+        └── add-rss-from-issue.yml    # Issue处理工作流
+```
+
+### 2. 依赖管理
+
+- 使用pip管理依赖
+- 依赖列表存储在requirements.txt中
+- 定期更新依赖版本
+
+### 3. 测试
+
+- 本地测试：使用--once参数进行单次测试
+- 手动触发：通过GitHub Action的workflow_dispatch手动触发
+- 日志检查：查看GitHub Action的运行日志
+
+### 4. 贡献指南
+
+- 提交Issue：报告问题或建议
+- 提交PR：修复bug或添加新功能
+- 遵循Python代码规范
+- 添加必要的注释
+- 测试通过后提交
+
+## 更新日志
+
+- 2023.10.10：初始版本
+- 2024.01.01：
+  - 增加夜间休眠功能
+  - 支持通过Issue添加RSS源
+  - 完善配置文件支持
+  - 优化推送逻辑
+- 2024.01.02：
+  - 调整GitHub Action执行时间为北京时间9:00-23:00
+  - 优化工作流运行时长为59分钟
+  - 移除--once参数，默认使用循环模式
+  - 完善README文档
+  - 添加Issue模板
+
+## 许可证
+
+MIT License
+
+## 贡献
+
+欢迎提交Issue和Pull Request！
+
+## 联系方式
+
+如有问题或建议，欢迎通过以下方式联系：
+- GitHub Issue：提交到项目仓库
+- 邮箱：your-email@example.com
+
+## 致谢
+
+感谢所有贡献者和使用本项目的用户！
 
 ## 通过Issue添加RSS源
 
