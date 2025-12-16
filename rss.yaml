@@ -76,3 +76,6 @@
 "数据泄露-crackingx":
   "rss_url": "https://crackingx.com/forums/-/index.rss"
   "website_name": "数据泄露-crackingx"
+"CVE威胁情报-日报":
+  "rss_url": "https://adminlove520.github.io/cve_monitor/RSS/cve_rss.xml"
+  "website_name": "CVE威胁情报-日报"
