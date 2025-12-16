@@ -336,7 +336,11 @@ def update_index_html(current_date, article_list, count):
         }
         h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 2rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
         }
         .report-list {
             list-style: none;
@@ -382,7 +386,7 @@ def update_index_html(current_date, article_list, count):
         <ul class="report-list">
             {% for report in reports %}
             <li class="report-item">
-                <a href="{{ report.path }}" class="report-link">{{ report.date }}</a>
+                <a href="{{ report.path }}" class="report-link" target="_blank">{{ report.date }}</a>
                 <div class="report-info">共 {{ report.count }} 篇文章</div>
             </li>
             {% endfor %}

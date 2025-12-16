@@ -2,9 +2,9 @@ name: Daily Report Generator
 
 on:
   schedule:
-    # 每天北京时间23:00生成日报
-    # UTC时间15:00生成日报
-    - cron: '0 15 * * *'
+    # 每天北京时间9:00生成日报
+    # UTC时间1:00生成日报
+    - cron: '0 1 * * *'
   workflow_dispatch:
 
 jobs:
