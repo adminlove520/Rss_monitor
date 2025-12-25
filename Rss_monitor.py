@@ -132,7 +132,7 @@ def check_for_updates(feed_url, site_name, cursor, conn, send_push=True):
             
             # 只有在send_push为True时才发送推送
             if send_push:
-                push_message(f"{site_name}今日更新", f"标题: {data_title}\n链接: `{data_link}`\n推送时间：{push_time}")
+                push_message(f"{site_name}今日更新", f"标题: {data_title}\n链接: {data_link}\n推送时间：{push_time}")
 
             # 存储到数据库 with a timestamp
             cursor.execute("INSERT INTO items (title, link, timestamp) VALUES (?, ?, CURRENT_TIMESTAMP)", (data_title, data_link))

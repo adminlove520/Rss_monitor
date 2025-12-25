@@ -18,7 +18,7 @@ push:
     webhook: ""
     app_name: "Discard"
     switch: "ON"  # 总开关
-    send_daily_report: "ON"  # 推送日报开关
+    send_daily_report: "OFF"  # 推送日报开关
     send_normal_msg: "ON"  # 推送普通消息开关
 
 # 代理配置

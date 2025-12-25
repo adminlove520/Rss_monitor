@@ -1,0 +1,81 @@
+"奇安信威胁情报中心":
+  "rss_url": "https://wechat2rss.xlab.app/feed/b93962f981247c0091dad08df5b7a6864ab888e9.xml"
+  "website_name": "奇安信威胁情报中心"
+"奇安信病毒响应中心":
+  "rss_url": "https://wechat2rss.xlab.app/feed/7874947663d806190d77bdca6f8f6855f65a1b20.xml"
+  "website_name": "奇安信病毒响应中心"
+"不安全":
+  "rss_url": "https://buaq.net/rss.xml"
+  "website_name": "不安全"
+"SecWiki News(国内外安全资讯)":
+  "rss_url": "https://www.sec-wiki.com/news/rss"
+  "website_name": "SecWiki News(国内外安全资讯)"
+"CNVD漏洞平台":
+  "rss_url": "https://wechat2rss.xlab.app/feed/edf17c7a01a7152b7a1ca14133258dc4abc1ca61.xml"
+  "website_name": "CNVD漏洞平台"
+"看雪学院":
+  "rss_url": "https://wechat2rss.xlab.app/feed/0e026637254d450ae84c59f87d4e4fb4616651ca.xml"
+  "website_name": "看雪学院"
+"微步在线研究响应中心":
+  "rss_url": "https://wechat2rss.xlab.app/feed/ac64c385ebcdb17fee8df733eb620a22b979928c.xml"
+  "website_name": "微步在线研究响应中心"
+"安全分析与研究":
+  "rss_url": "https://wechat2rss.xlab.app/feed/62ba31603ffe26b5a8eca9ddaa434ea612445c10.xml"
+  "website_name": "安全分析与研究"
+"信息安全国家工程研究中心":
+  "rss_url": "https://wechat2rss.xlab.app/feed/7caad9bdb6b168fe174bc815a9b44b7f52d7198b.xml"
+  "website_name": "信息安全国家工程研究中心"
+"安全威胁情报":
+  "rss_url": "https://wechat2rss.xlab.app/feed/9823254aff8854917b418bc19efe49ac160669e8.xml"
+  "website_name": "安全威胁情报"
+"软件安全与逆向分析":
+  "rss_url": "https://wechat2rss.xlab.app/feed/021e3a28dfa435253d1b5610e6678205ea0919b6.xml"
+  "website_name": "软件安全与逆向分析"
+"甲方安全建设":
+  "rss_url": "https://wechat2rss.xlab.app/feed/130f6c9e835ca7f7c9f329a93140129499970662.xml"
+  "website_name": "甲方安全建设"
+"电子数据取证与鉴定":
+  "rss_url": "https://wechat2rss.xlab.app/feed/aa202e8b44eec0847ad9ab2bece74addfede9894.xml"
+  "website_name": "电子数据取证与鉴定"
+"数据安全与取证":
+  "rss_url": "https://wechat2rss.xlab.app/feed/8c9b7e3366ca88442203715d5616c05d24d0306c.xml"
+  "website_name": "数据安全与取证"
+"奇安信威胁情报中心":
+  "rss_url": "https://wechat2rss.xlab.app/feed/b93962f981247c0091dad08df5b7a6864ab888e9.xml"
+  "website_name": "奇安信威胁情报中心"
+"奇安信病毒响应中心":
+  "rss_url": "https://wechat2rss.xlab.app/feed/7874947663d806190d77bdca6f8f6855f65a1b20.xml"
+  "website_name": "奇安信病毒响应中心"
+"先知技术社区":
+  "rss_url": "https://xz.aliyun.com/feed"
+  "website_name": "先知技术社区"
+"FreeBuf互联网安全新媒体平台":
+  "rss_url": "https://www.freebuf.com/feed"
+  "website_name": "FreeBuf互联网安全新媒体平台"
+"漏洞推送":
+  "rss_url": "https://wechat2rss.xlab.app/feed/e5a0a3d839536204e4bcec6ede59fe0cc11f6fc6.xml"
+  "website_name": "漏洞推送"
+# ctifeeds
+"ctifeeds-数据泄露":
+  "rss_url": "https://ctifeeds.andreafortuna.org/dataleaks.xml"
+  "website_name": "ctifeeds-数据泄露"
+"ctifeeds-Cybercrime on Telegram":
+  "rss_url": "https://ctifeeds.andreafortuna.org/cybercrime_on_telegram.xml"
+  "website_name": "ctifeeds-网络犯罪"
+"ctifeeds-Datamarkets":
+  "rss_url": "https://ctifeeds.andreafortuna.org/datamarkets.xml"
+  "website_name": "ctifeeds-数据市场"
+"ctifeeds-篡改事件":
+  "rss_url": "https://ctifeeds.andreafortuna.org/recent_defacements.xml"
+  "website_name": "ctifeeds-数据市场"
+# 数据泄露
+"数据泄露-darkforums":
+  "rss_url": "https://xforums.st/forums/-/index.rss"
+  "website_name": "数据泄露-xforums.st"
+
+"数据泄露-crackingx":
+  "rss_url": "https://crackingx.com/forums/-/index.rss"
+  "website_name": "数据泄露-crackingx"
+"CVE威胁情报-日报":
+  "rss_url": "https://adminlove520.github.io/cve_monitor/RSS/cve_rss.xml"
+  "website_name": "CVE威胁情报-日报"
