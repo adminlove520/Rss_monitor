@@ -1,16 +1,4 @@
 # 配置Issue模板
 blank_issues_enabled: false  # 禁用空白Issue，只允许使用模板
-templates:  # GitHub Issue模板配置的正确字段名是templates
-  - bug-report.yml
-  - add-rss-source.yml
-  - discussion.yml
-contact_links:
-  - name: 问题反馈
-    url: https://github.com/adminlove520/Rss_monitor/issues/new?template=bug-report.yml
-    about: 请使用bug-report.yml模板报告问题
-  - name: 添加RSS源
-    url: https://github.com/adminlove520/Rss_monitor/issues/new?template=add-rss-source.yml
-    about: 请使用add-rss-source.yml模板添加RSS源
-  - name: 项目讨论
-    url: https://github.com/adminlove520/Rss_monitor/issues/new?template=discussion.yml
-    about: 请使用discussion.yml模板进行项目讨论
+# 移除了contact_links中指向模板的链接，因为GitHub会自动显示模板选择界面
+# 只保留真正需要的外部链接（如果有）

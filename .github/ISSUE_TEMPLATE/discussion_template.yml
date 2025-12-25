@@ -1,7 +1,8 @@
 name: 项目讨论
 about: 关于项目的讨论和建议
 title: "讨论："
-labels: ["discussion"]  # 修复：labels应该是数组，而不是字符串
+labels:
+  - discussion
 assignees: ""
 
 body:
