@@ -15,11 +15,18 @@ push:
     app_name: "Telegram Bot"
     switch: "OFF"
   discard:
-    webhook: "discard的webhook地址"
+    webhook: ""
     app_name: "Discard"
     switch: "ON"  # 总开关
     send_daily_report: "ON"  # 推送日报开关
-    send_normal_msg: "ON"  # 推送每日消息开关
+    send_normal_msg: "ON"  # 推送普通消息开关
+
+# 代理配置
+proxy:
+  enable: "ON"  # 设置为 "ON" 启用代理
+  http_proxy: "http://127.0.0.1:7890"  # HTTP代理地址
+  https_proxy: "https://127.0.0.1:7890"  # HTTPS代理地址
+  no_proxy: "localhost,127.0.0.1"  # 不使用代理的地址列表
 
 # 夜间休眠配置
 night_sleep:

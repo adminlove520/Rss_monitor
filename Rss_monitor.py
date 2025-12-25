@@ -66,6 +66,15 @@ def load_config():
         'switch': os.environ.get('DAILY_REPORT_SWITCH', config.get('daily_report', {}).get('switch', 'ON'))
     }
     
+    # 加载代理配置
+    proxy_config = config.get('proxy', {})
+    config['proxy'] = {
+        'enable': os.environ.get('PROXY_ENABLE', proxy_config.get('enable', 'OFF')),
+        'http_proxy': os.environ.get('HTTP_PROXY', proxy_config.get('http_proxy', '')),
+        'https_proxy': os.environ.get('HTTPS_PROXY', proxy_config.get('https_proxy', '')),
+        'no_proxy': os.environ.get('NO_PROXY', proxy_config.get('no_proxy', ''))
+    }
+    
     config['push'] = push_config
     return config
 
@@ -130,6 +139,23 @@ def check_for_updates(feed_url, site_name, cursor, conn, send_push=True):
             conn.commit()
     return data_list
 
+# 获取代理配置
+
+def get_proxies():
+    config = load_config()
+    proxy_config = config.get('proxy', {})
+    
+    if proxy_config.get('enable', 'OFF') == 'OFF':
+        return None
+    
+    proxies = {}
+    if proxy_config.get('http_proxy'):
+        proxies['http'] = proxy_config.get('http_proxy')
+    if proxy_config.get('https_proxy'):
+        proxies['https'] = proxy_config.get('https_proxy')
+    
+    return proxies if proxies else None
+
 # 推送函数
 def push_message(title, content):
     config = load_config()
@@ -163,14 +189,27 @@ def send_tg_bot_msg(token, group_id, title, content):
 # 钉钉推送
 def dingding(text, msg, webhook, secretKey):
     try:
+        if not webhook or webhook == "https://oapi.dingtalk.com/robot/send?access_token=你的token":
+            print(f"钉钉推送跳过：webhook地址未配置")
+            return
+            
+        if not secretKey or secretKey == "你的Key":
+            print(f"钉钉推送跳过：secret_key未配置")
+            return
+            
         ding = cb.DingtalkChatbot(webhook, secret=secretKey)
         ding.send_text(msg='{}\r\n{}'.format(text, msg), is_at_all=False)
+        print(f"钉钉推送成功: {text}")
     except Exception as e:
         print(f"钉钉推送失败: {str(e)}")
 
 # 飞书推送
 def feishu(text, msg, webhook):
     try:
+        if not webhook or webhook == "飞书的webhook地址":
+            print(f"飞书推送跳过：webhook地址未配置")
+            return
+            
         headers = {
             "Content-Type": "application/json;charset=utf-8"
         }
@@ -180,8 +219,11 @@ def feishu(text, msg, webhook):
                 "text": '{}\n{}'.format(text, msg)
             }
         }
+        
+        # 飞书推送不需要代理
         response = requests.post(webhook, json=data, headers=headers, timeout=10)
         response.raise_for_status()
+        print(f"飞书推送成功: {text}")
     except Exception as e:
         print(f"飞书推送失败: {str(e)}")
 
@@ -191,36 +233,72 @@ def send_dingding_msg(webhook, secret_key, title, content):
 
 # Discard推送
 def send_discard_msg(webhook, title, content, is_daily_report=False, html_file=None):
+    # 检查是否是占位符
+    if not webhook or webhook == "discard的webhook地址":
+        print(f"Discard推送跳过：webhook地址未配置")
+        return
+    
+    # 检查webhook地址格式
+    if not webhook.startswith('http'):
+        print(f"Discard推送失败：webhook地址格式错误，必须以http或https开头")
+        return
+    
     try:
         headers = {
             "Content-Type": "application/json;charset=utf-8"
         }
         
         if is_daily_report and html_file:
-            # 推送日报，读取HTML文件内容
-            with open(html_file, 'r', encoding='utf-8') as f:
-                html_content = f.read()
-            
+            # 推送日报，Discord Webhook不支持直接发送HTML格式，使用文本格式发送链接
             data = {
-                "msg_type": "html",
-                "content": {
-                    "html": html_content
-                }
+                "content": f"**RSS日报 {title}**\n{content}\n日报文件：{html_file}"
             }
         else:
-            # 推送普通消息，与钉钉格式相同
+            # 推送普通消息，使用Discord Webhook支持的格式
             data = {
-                "msg_type": "text",
-                "content": {
-                    "text": '{}\n{}'.format(title, content)
-                }
+                "content": f"**{title}**\n{content}"
             }
         
-        response = requests.post(webhook, json=data, headers=headers, timeout=10)
-        response.raise_for_status()
-        print(f"Discard推送成功: {title}")
+        print(f"正在发送Discard推送：{title}")
+        print(f"目标地址：{webhook}")
+        
+        # 获取代理配置
+        proxies = get_proxies()
+        if proxies:
+            print(f"使用代理：{proxies}")
+        
+        # 使用较短的超时时间，避免长时间阻塞
+        response = requests.post(webhook, json=data, headers=headers, timeout=5, proxies=proxies)
+        
+        print(f"Discard推送响应状态码：{response.status_code}")
+        
+        # 检查响应状态
+        if response.status_code in [200, 204]:
+            print(f"Discard推送成功: {title}")
+        else:
+            print(f"Discard推送失败: HTTP状态码 - {response.status_code}")
+            print(f"响应内容: {response.text}")
+            
+            # 提供解决方案建议
+            if response.status_code == 401:
+                print("建议：请检查webhook地址是否正确，可能包含无效的token")
+            elif response.status_code == 404:
+                print("建议：webhook地址不存在，请检查webhook地址是否正确")
+            elif response.status_code == 429:
+                print("建议：超出Discord API速率限制，请稍后再试")
+            elif response.status_code >= 500:
+                print("建议：Discord服务器错误，请稍后再试")
+    except requests.exceptions.Timeout:
+        print(f"Discard推送失败: 连接超时")
+        print("建议：检查网络连接，或尝试使用更快的网络环境")
+    except requests.exceptions.ConnectionError:
+        print(f"Discard推送失败: 网络连接错误")
+        print("建议：检查网络连接，确保可以访问discord.com")
+        print("可以尝试使用ping命令测试：ping discord.com")
+    except requests.exceptions.RequestException as e:
+        print(f"Discard推送失败: 请求异常 - {str(e)}")
     except Exception as e:
-        print(f"Discard推送失败: {str(e)}")
+        print(f"Discard推送失败: 未知错误 - {str(e)}")
 
 # 生成日报
 
@@ -452,10 +530,28 @@ def update_index_html(current_date, article_list, count):
 def tgbot(text, msg, token, group_id):
     import telegram
     try:
-        bot = telegram.Bot(token=token)
+        if not token or token == "Telegram Bot的token":
+            print(f"Telegram推送跳过：token未配置")
+            return
+            
+        if not group_id or group_id == "Telegram Bot的group_id":
+            print(f"Telegram推送跳过：group_id未配置")
+            return
+            
+        # 获取代理配置
+        proxies = get_proxies()
+        
+        if proxies:
+            # 配置telegram bot使用代理
+            request_kwargs = {'proxies': proxies}
+            bot = telegram.Bot(token=token, request_kwargs=request_kwargs)
+        else:
+            bot = telegram.Bot(token=token)
+            
         bot.send_message(chat_id=group_id, text=f'{text}\n{msg}')
+        print(f"Telegram推送成功: {text}")
     except Exception as e:
-        pass
+        print(f"Telegram推送失败: {str(e)}")
 
 # 主函数
 

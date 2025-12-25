@@ -53,10 +53,30 @@ push:
     send_daily_report: "OFF"  # 推送日报开关
     send_normal_msg: "ON"  # 推送普通消息开关
 
+# 代理配置
+proxy:
+  enable: "OFF"  # 设置为 "ON" 启用代理
+  http_proxy: "http://proxy.example.com:8080"  # HTTP代理地址
+  https_proxy: "https://proxy.example.com:8080"  # HTTPS代理地址
+  no_proxy: "localhost,127.0.0.1"  # 不使用代理的地址列表
+
 # 夜间休眠配置
 night_sleep:
   switch: "ON"  # 设置开关为 "ON" 开启夜间休眠，设置为其他值则关闭
 ```
+
+#### 代理配置说明
+
+- **enable**: 代理总开关，设置为 "ON" 启用代理，"OFF" 禁用代理
+- **http_proxy**: HTTP代理地址，格式为 `http://proxy.example.com:8080`
+- **https_proxy**: HTTPS代理地址，格式为 `https://proxy.example.com:8080`
+- **no_proxy**: 不使用代理的地址列表，多个地址用逗号分隔
+
+代理配置支持所有推送渠道，包括：
+- 钉钉
+- 飞书
+- Telegram Bot
+- Discard
 
 ### 2. RSS源配置 (`rss.yaml`)
 
@@ -84,6 +104,10 @@ night_sleep:
 | DISCARD_SWITCH | Discard总推送开关（ON/OFF） |
 | DISCARD_SEND_DAILY_REPORT | Discard推送日报开关（ON/OFF） |
 | DISCARD_SEND_NORMAL_MSG | Discard推送普通消息开关（ON/OFF） |
+| PROXY_ENABLE | 是否启用代理（ON/OFF） |
+| HTTP_PROXY | HTTP代理地址 |
+| HTTPS_PROXY | HTTPS代理地址 |
+| NO_PROXY | 不使用代理的地址列表 |
 | NIGHT_SLEEP_SWITCH | 夜间休眠开关（ON/OFF） |
 
 ## 使用
