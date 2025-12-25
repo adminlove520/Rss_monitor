@@ -36,19 +36,72 @@ if issue_state != 'open' or '添加RSS源' not in issue_title:
     sys.exit(0)
 
 # 解析Issue内容
+# GitHub表单式issue模板提交的内容是结构化的，包含各种字段
+# 我们需要从issue数据中提取表单字段，而不是解析文本内容
 try:
-    lines = issue_body.strip().split('\n')
+    # 检查issue是否使用了模板
+    if 'labels' in issue_data['issue']:
+        labels = [label['name'] for label in issue_data['issue']['labels']]
+        # 只有带有add-rss标签的issue才处理
+        if 'add-rss' not in labels:
+            print(f"Issue #{issue_number} 没有add-rss标签，跳过处理")
+            sys.exit(0)
+    
+    # 从issue事件数据中提取表单字段
+    # GitHub Actions事件数据中的issue.body是表单提交后的文本内容
+    # 但我们需要从event数据中直接获取结构化的表单字段
+    # 注意：GitHub Actions的issues事件不直接提供结构化的表单字段
+    # 我们需要解析issue.body中的Markdown表格或列表
+    
+    body = issue_data['issue']['body']
     website_name = None
     rss_url = None
     
+    # 解析表单式issue模板生成的Markdown内容
+    # 表单式issue模板生成的内容格式如下：
+    # ### 网站名称
+    # 奇安信威胁情报中心
+    # 
+    # ### RSS URL
+    # https://example.com/feed.xml
+    
+    lines = body.strip().split('\n')
+    current_field = None
+    
     for line in lines:
-        if line.startswith('网站名称：'):
-            website_name = line.split('：')[1].strip()
-        elif line.startswith('RSS链接：'):
-            rss_url = line.split('：')[1].strip()
+        line = line.strip()
+        if line.startswith('### '):
+            # 字段标题
+            current_field = line[4:].strip()
+        elif current_field and line:
+            # 字段值
+            if current_field == '网站名称':
+                website_name = line
+            elif current_field == 'RSS URL':
+                rss_url = line
+            # 重置当前字段，避免重复赋值
+            current_field = None
+    
+    # 如果上面的解析方法失败，尝试另一种格式（使用冒号分隔）
+    if not website_name or not rss_url:
+        for line in lines:
+            line = line.strip()
+            if line.startswith('网站名称:'):
+                website_name = line.split(':', 1)[1].strip()
+            elif line.startswith('RSS URL:'):
+                rss_url = line.split(':', 1)[1].strip()
+    
+    # 如果还是失败，尝试原始的中文冒号格式
+    if not website_name or not rss_url:
+        for line in lines:
+            line = line.strip()
+            if line.startswith('网站名称：'):
+                website_name = line.split('：')[1].strip()
+            elif line.startswith('RSS链接：') or line.startswith('RSS URL：'):
+                rss_url = line.split('：')[1].strip()
     
     if not website_name or not rss_url:
-        raise ValueError("Issue内容格式不正确，缺少网站名称或RSS链接")
+        raise ValueError("Issue内容格式不正确，无法提取网站名称或RSS链接")
     
     print(f"解析到的网站名称：{website_name}")
     print(f"解析到的RSS链接：{rss_url}")
