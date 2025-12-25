@@ -254,7 +254,8 @@ def send_discard_msg(webhook, title, content, is_daily_report=False, html_file=N
             github_pages_url = f"https://adminlove520.github.io/Rss_monitor/{html_file}"
             
             # 构建推送内容
-            push_content = f"**RSS日报 {title}**\n共收集到 {content.split()[1]} 篇文章\n日报文件：{html_file}\n地址: [{github_pages_url}]({github_pages_url})\n\n"
+            # 标题已经包含"RSS日报"，所以这里不再重复添加
+            push_content = f"**{title}**\n共收集到 {content.split()[1]} 篇文章\n日报文件：{html_file}\n地址: {github_pages_url}\n\n"
             
             # 添加markdown内容（预览格式）
             if markdown_content:
@@ -267,13 +268,13 @@ def send_discard_msg(webhook, title, content, is_daily_report=False, html_file=N
                     if line.startswith('## '):
                         include_lines = True
                     # 跳过Power By信息
-                    if line.strip().startswith('Power By'):
+                    if line.strip().startswith('---'):
                         break
                     if include_lines:
                         preview_content.append(line)
                 
                 # 拼接预览内容
-                push_content += "**日报内容预览：**\n"
+                push_content += "日报内容预览：\n"
                 push_content += '\n'.join(preview_content)
                 push_content += "\n\n"
             
