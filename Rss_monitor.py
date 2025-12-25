@@ -255,9 +255,9 @@ def send_discard_msg(webhook, title, content, is_daily_report=False, html_file=N
             
             # 构建推送内容
             # 标题已经包含"RSS日报"，所以这里不再重复添加
-            # 提取文件名（不包含扩展名）作为地址显示
-            file_name = os.path.basename(html_file).split('.')[0]
-            push_content = f"**{title}**\n共收集到 {content.split()[1]} 篇文章\n欢迎提交RSS源：[GitHub Issue](https://github.com/adminlove520/Rss_monitor/issues/new/choose)\n{file_name}：{github_pages_url}\n\n"
+            # 使用time.strftime获取当前日期
+            current_date = time.strftime('%Y-%m-%d', time.localtime())
+            push_content = f"**{title}**\n共收集到 {content.split()[1]} 篇文章\n欢迎提交RSS源：[GitHub Issue](https://github.com/adminlove520/Rss_monitor/issues/new/choose)\n{current_date}:{github_pages_url}\n\n"
             
             # 添加markdown内容（预览格式）
             if markdown_content:
