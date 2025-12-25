@@ -232,7 +232,7 @@ def send_dingding_msg(webhook, secret_key, title, content):
     dingding(title, content, webhook, secret_key)
 
 # Discard推送
-def send_discard_msg(webhook, title, content, is_daily_report=False, html_file=None):
+def send_discard_msg(webhook, title, content, is_daily_report=False, html_file=None, markdown_content=None):
     # 检查是否是占位符
     if not webhook or webhook == "discard的webhook地址":
         print(f"Discard推送跳过：webhook地址未配置")
@@ -250,8 +250,25 @@ def send_discard_msg(webhook, title, content, is_daily_report=False, html_file=N
         
         if is_daily_report and html_file:
             # 推送日报，Discord Webhook不支持直接发送HTML格式，使用文本格式发送链接
+            # 生成GitHub Pages URL
+            github_pages_url = f"https://adminlove520.github.io/Rss_monitor/{html_file}"
+            
+            # 构建推送内容
+            push_content = f"**RSS日报 {title}**\n共收集到 {content.split()[1]} 篇文章\n日报文件：{html_file}\n地址: `{github_pages_url}`\n\n"
+            
+            # 添加markdown内容
+            if markdown_content:
+                push_content += "**日报的markdown内容：**\n```markdown\n"
+                push_content += markdown_content
+                push_content += "\n```\n\n"
+            
+            # 添加Power By信息
+            push_content += "---\n"
+            push_content += "**Power By 东方隐侠安全团队·Anonymous@** [隐侠安全客栈](https://www.dfyxsec.com/)\n"
+            push_content += "---"
+            
             data = {
-                "content": f"**RSS日报 {title}**\n{content}\n日报文件：{html_file}"
+                "content": push_content
             }
         else:
             # 推送普通消息，使用Discord Webhook支持的格式
@@ -336,6 +353,9 @@ def generate_daily_report(cursor):
             'timestamp': timestamp
         })
     
+    # 添加Power By信息（居中显示）
+    markdown_content += f"\n<center>Power By 东方隐侠安全团队·Anonymous@ [隐侠安全客栈](https://www.dfyxsec.com/)</center>\n"
+    
     # 写入markdown文件
     markdown_file = f'{archive_dir}/Daily_{current_date}.md'
     is_update = os.path.exists(markdown_file)
@@ -384,7 +404,8 @@ def generate_daily_report(cursor):
                 f"RSS日报 {current_date}",
                 f"共收集到 {len(articles)} 篇文章",
                 is_daily_report=True,
-                html_file=html_file
+                html_file=html_file,
+                markdown_content=markdown_content
             )
         
     except Exception as e:
@@ -643,6 +664,11 @@ def main():
                         website_name = config.get("website_name")
                         rss_url = config.get("rss_url")
                         check_for_updates(rss_url, website_name, cursor, conn)
+
+                    # 检查是否需要生成日报
+                    config = load_config()
+                    if config.get('daily_report', {}).get('switch', 'ON') == 'ON':
+                        generate_daily_report(cursor)
 
                     # 每二小时执行一次
                     time.sleep(10800)
