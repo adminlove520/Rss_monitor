@@ -15,7 +15,7 @@ push:
     app_name: "Telegram Bot"
     switch: "OFF"
   discard:
-    webhook: "https://discord.com/api/webhooks/1453660933464522927/x0cZIuIVtRsgmTClJY3WzvOg3WmdYzgLpHElWbjDZXitU98qS4_A0ymZuIBi646qPbNU"
+    webhook: "discard的webhook地址"
     app_name: "Discard"
     switch: "ON"  # 总开关
     send_daily_report: "ON"  # 推送日报开关
