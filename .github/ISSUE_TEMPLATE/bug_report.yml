@@ -1,9 +1,7 @@
-name: "🐛 Bug报告"
-description: 报告一个bug或问题
-title: "Bug："
-labels:
-  - bug
-assignees: ""
+name: Bug report
+description: Report errors or unexpected behavior
+title: "Bug: "
+labels: [bug]
 
 body:
   - type: markdown

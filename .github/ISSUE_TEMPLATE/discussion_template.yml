@@ -1,9 +1,7 @@
-name: "💬 项目讨论"
-description: 关于项目的讨论和建议
-title: "讨论："
-labels:
-  - discussion
-assignees: ""
+name: Discussion
+description: Discuss ideas or suggestions for the project
+title: "Discussion: "
+labels: [discussion]
 
 body:
   - type: markdown
@@ -11,7 +9,7 @@ body:
       value: |
         欢迎参与项目讨论！
         请详细描述您的想法或建议，以便我们更好地理解和回应。
-  
+
   - type: textarea
     id: discussion-content
     attributes:
@@ -20,14 +18,14 @@ body:
       placeholder: 例如：我认为可以添加XX功能，因为XX...
     validations:
       required: true
-  
+
   - type: textarea
     id: additional-info
     attributes:
       label: 附加信息
       description: 可以添加任何相关的附加信息，如截图、代码示例等
       placeholder: 例如：相关截图、代码示例等
-  
+
   - type: checkboxes
     id: checks
     attributes:

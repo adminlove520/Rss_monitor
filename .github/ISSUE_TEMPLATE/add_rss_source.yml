@@ -1,9 +1,7 @@
-name: "📰 添加RSS源"
-description: 提交新的RSS源，自动添加到监控列表
-title: "添加RSS源："
-labels:
-  - add-rss
-assignees: ""
+name: Add RSS Source
+description: Submit a new RSS source to be added to the monitoring list
+title: "Add RSS Source: "
+labels: [add-rss]
 
 body:
   - type: markdown
